@@ -46,5 +46,67 @@ public class Message {
       return this.messageHash;
     }
     
+    public String checkMessageLength(){
+     if(messageText.length()<= 250){
+       return "Message ready to send.";  
+     }else{
+        int excess = messageText.length() - 250;
+        return "Message exceeds 250 characters by" + excess + "; please reduce the size.";
+     }  
+    }
+
     
+    public String sentMessage(int choice){
+      switch(choice){
+          case 1:
+           totalMessagesSent++;
+           sentMessages.add(formatMessageDetails());
+           return "Message successfully sent.";
+          case 2:
+            return "Press 0 to delete the message.";
+          case 3:
+              storeMessage();
+             return "Message successfully stored.";
+          default:
+              return "Invalid option";
+    }
 }
+
+public void storeMessage(){
+    try{
+        java.io.FileWriter fw = new java.io.FileWriter("stored_messages.json", true);
+        fw.write("{\n");
+        fw.write("\" messageID\":\"" + messageID + "\",\n");
+        fw.write("\" messageHash\" : \"" + messageHash + "\",\n");
+        fw.write("\"recipient\" : \"" + recipientCell + "\",n");
+        fw.write("\"message\" : \"" + messageText + "\"\n");
+        fw.write("}\n");
+        fw.close();
+        System.out.println("Message successfully stored to JSON.");
+    }catch (Exception e){
+       System.out.println("Error storing message: " + e.getMessage());
+    }
+}
+
+public static String printMessages(){
+    if(sentMessages.isEmpty()){
+        return"No messages sent yet.";
+    }
+    StringBuilder sb = new StringBuilder();
+    for(String msg : sentMessages){
+        sb.append(msg).append("\n\n");
+    }
+    return sb.toString().trim();
+}
+
+public static int returnTotalMessage(){
+    return totalMessagesSent;
+}
+
+public String formatMessageDetails(){
+    return "Message ID: " +messageID +
+            "\nMessage Hash: " + messageHash +
+             "\nRecipient: " + recipientCell +
+            "\nMessage: " + messageText;
+}
+
