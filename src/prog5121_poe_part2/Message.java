@@ -110,3 +110,8 @@ public String formatMessageDetails(){
             "\nMessage: " + messageText;
 }
 
+public String getMessageID(){return messageID;}
+public String getMessageHash(){return messageHash;}
+public String getRecipientCell(){return recipientCell;}
+public String getMessageText(){return messageText;}
+}
